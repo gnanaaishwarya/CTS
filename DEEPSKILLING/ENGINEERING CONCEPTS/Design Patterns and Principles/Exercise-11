@@ -1,0 +1,112 @@
+Exercise 11: Implementing Dependency Injection
+
+## Aim
+
+To implement Dependency Injection using constructor injection in a customer management application.
+
+## Project Name
+
+DependencyInjectionExample
+
+## Project Structure
+
+```text
+DependencyInjectionExample
+│
+├── CustomerRepository.java
+├── CustomerRepositoryImpl.java
+├── CustomerService.java
+└── DependencyInjectionTest.java
+```
+
+## 1. Define Repository Interface
+
+### CustomerRepository.java
+
+```java
+public interface CustomerRepository {
+    String findCustomerById(int id);
+}
+```
+
+## 2. Implement Concrete Repository
+
+### CustomerRepositoryImpl.java
+
+```java
+public class CustomerRepositoryImpl implements CustomerRepository {
+
+    @Override
+    public String findCustomerById(int id) {
+        return "Customer ID: " + id + ", Name: Rahul";
+    }
+}
+```
+
+## 3. Define Service Class
+
+### CustomerService.java
+
+```java
+public class CustomerService {
+
+    private CustomerRepository customerRepository;
+
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public String getCustomerById(int id) {
+        return customerRepository.findCustomerById(id);
+    }
+}
+```
+
+## 4. Implement Dependency Injection
+
+Constructor Injection is used to provide the dependency (`CustomerRepository`) to the `CustomerService` class through its constructor.
+
+## 5. Test the Dependency Injection
+
+### DependencyInjectionTest.java
+
+```java
+public class DependencyInjectionTest {
+
+    public static void main(String[] args) {
+
+        CustomerRepository repository = new CustomerRepositoryImpl();
+
+        CustomerService service = new CustomerService(repository);
+
+        System.out.println(service.getCustomerById(101));
+    }
+}
+```
+
+## Output
+
+```text
+Customer ID: 101, Name: Rahul
+```
+
+## Working
+
+1. The `CustomerRepository` interface defines the repository operations.
+2. `CustomerRepositoryImpl` provides the implementation of the repository.
+3. `CustomerService` depends on the `CustomerRepository` interface rather than a concrete class.
+4. The dependency is injected through the constructor of `CustomerService`.
+5. The service uses the repository to retrieve customer information.
+6. This approach reduces coupling between classes and improves flexibility.
+
+## Advantages of Dependency Injection
+
+1. Promotes loose coupling between components.
+2. Improves code maintainability and scalability.
+3. Makes unit testing easier by allowing mock dependencies.
+4. Enhances flexibility by enabling different implementations.
+5. Follows the Dependency Inversion Principle.
+
+## Conclusion
+
+Dependency Injection was successfully implemented using constructor injection. The `CustomerService` class receives its dependency through the constructor rather than creating it internally. This design improves flexibility, testability, maintainability, and promotes loosely coupled application architecture.
