@@ -1,0 +1,184 @@
+Exercise 7: Implementing the Observer Pattern
+
+## Aim
+
+To implement the Observer Design Pattern for a stock market monitoring application where multiple clients receive notifications whenever stock prices change.
+
+## Project Name
+
+ObserverPatternExample
+
+## Project Structure
+
+```text id="po8d4r"
+ObserverPatternExample
+│
+├── Stock.java
+├── Observer.java
+├── StockMarket.java
+├── MobileApp.java
+├── WebApp.java
+└── ObserverTest.java
+```
+
+## 1. Define Subject Interface
+
+### Stock.java
+
+```java id="3j4n8y"
+public interface Stock {
+    void registerObserver(Observer observer);
+    void deregisterObserver(Observer observer);
+    void notifyObservers();
+}
+```
+
+## 2. Define Observer Interface
+
+### Observer.java
+
+```java id="x7m2kp"
+public interface Observer {
+    void update(String stockName, double price);
+}
+```
+
+## 3. Implement Concrete Subject
+
+### StockMarket.java
+
+```java id="m9v4zs"
+import java.util.ArrayList;
+import java.util.List;
+
+public class StockMarket implements Stock {
+
+    private List<Observer> observers = new ArrayList<>();
+    private String stockName;
+    private double price;
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void deregisterObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update(stockName, price);
+        }
+    }
+
+    public void setStockPrice(String stockName, double price) {
+        this.stockName = stockName;
+        this.price = price;
+        notifyObservers();
+    }
+}
+```
+
+## 4. Implement Concrete Observers
+
+### MobileApp.java
+
+```java id="k2v9ft"
+public class MobileApp implements Observer {
+
+    private String userName;
+
+    public MobileApp(String userName) {
+        this.userName = userName;
+    }
+
+    @Override
+    public void update(String stockName, double price) {
+        System.out.println("Mobile App [" + userName + "] - " +
+                stockName + " price updated to Rs." + price);
+    }
+}
+```
+
+### WebApp.java
+
+```java id="d5n7qw"
+public class WebApp implements Observer {
+
+    private String userName;
+
+    public WebApp(String userName) {
+        this.userName = userName;
+    }
+
+    @Override
+    public void update(String stockName, double price) {
+        System.out.println("Web App [" + userName + "] - " +
+                stockName + " price updated to Rs." + price);
+    }
+}
+```
+
+## 5. Test the Observer Pattern
+
+### ObserverTest.java
+
+```java id="r4u8ye"
+public class ObserverTest {
+
+    public static void main(String[] args) {
+
+        StockMarket stockMarket = new StockMarket();
+
+        Observer mobileUser = new MobileApp("Rahul");
+        Observer webUser = new WebApp("Priya");
+
+        stockMarket.registerObserver(mobileUser);
+        stockMarket.registerObserver(webUser);
+
+        System.out.println("Stock Price Update 1:");
+        stockMarket.setStockPrice("TCS", 3850.50);
+
+        System.out.println();
+
+        System.out.println("Stock Price Update 2:");
+        stockMarket.setStockPrice("Infosys", 1520.75);
+    }
+}
+```
+
+## Output
+
+```text id="0n6r0j"
+Stock Price Update 1:
+Mobile App [Rahul] - TCS price updated to Rs.3850.5
+Web App [Priya] - TCS price updated to Rs.3850.5
+
+Stock Price Update 2:
+Mobile App [Rahul] - Infosys price updated to Rs.1520.75
+Web App [Priya] - Infosys price updated to Rs.1520.75
+```
+
+## Working
+
+1. The `Stock` interface defines methods for registering, deregistering, and notifying observers.
+2. `StockMarket` acts as the subject and maintains a list of observers.
+3. The `Observer` interface defines the `update()` method.
+4. `MobileApp` and `WebApp` are concrete observers that receive stock price updates.
+5. When the stock price changes, `StockMarket` calls `notifyObservers()`.
+6. All registered observers automatically receive the updated stock information.
+
+## Advantages of Observer Pattern
+
+1. Establishes a one-to-many relationship between objects.
+2. Promotes loose coupling between subject and observers.
+3. Allows dynamic registration and removal of observers.
+4. Simplifies event-driven system design.
+5. Improves maintainability and scalability.
+
+## Conclusion
+
+The Observer Pattern was successfully implemented using a StockMarket subject and multiple observers. Whenever stock prices change, all registered observers are automatically notified. This pattern provides an efficient and scalable solution for real-time stock market monitoring applications while maintaining loose coupling between components.
