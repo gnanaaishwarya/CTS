@@ -1,0 +1,194 @@
+Exercise 5: Task Management System
+
+## 1. Understanding Linked Lists
+
+A Linked List is a linear data structure where elements are stored in nodes, and each node contains data and a reference to the next node.
+
+### Types of Linked Lists
+
+#### Singly Linked List
+
+* Each node contains data and a reference to the next node.
+* Traversal is possible only in the forward direction.
+* Requires less memory compared to a doubly linked list.
+
+#### Doubly Linked List
+
+* Each node contains data, a reference to the next node, and a reference to the previous node.
+* Traversal is possible in both forward and backward directions.
+* Requires more memory due to the extra reference.
+
+## 2. Setup
+
+### Task Class
+
+```java
+public class Task {
+    private int taskId;
+    private String taskName;
+    private String status;
+
+    public Task(int taskId, String taskName, String status) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.status = status;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public String toString() {
+        return "Task ID: " + taskId + ", Task Name: " + taskName + ", Status: " + status;
+    }
+}
+```
+
+## 3. Implementation
+
+### Node Class
+
+```java
+class Node {
+    Task task;
+    Node next;
+
+    public Node(Task task) {
+        this.task = task;
+        this.next = null;
+    }
+}
+```
+
+### Singly Linked List Implementation
+
+```java
+public class TaskManagement {
+    private Node head;
+
+    public void addTask(Task task) {
+        Node newNode = new Node(task);
+
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+
+        Node current = head;
+
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        current.next = newNode;
+    }
+
+    public Task searchTask(int taskId) {
+        Node current = head;
+
+        while (current != null) {
+            if (current.task.getTaskId() == taskId) {
+                return current.task;
+            }
+            current = current.next;
+        }
+
+        return null;
+    }
+
+    public void traverseTasks() {
+        Node current = head;
+
+        while (current != null) {
+            System.out.println(current.task);
+            current = current.next;
+        }
+    }
+
+    public void deleteTask(int taskId) {
+        if (head == null) {
+            return;
+        }
+
+        if (head.task.getTaskId() == taskId) {
+            head = head.next;
+            return;
+        }
+
+        Node current = head;
+
+        while (current.next != null &&
+               current.next.task.getTaskId() != taskId) {
+            current = current.next;
+        }
+
+        if (current.next != null) {
+            current.next = current.next.next;
+        }
+    }
+}
+```
+
+### Main Class
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        TaskManagement taskList = new TaskManagement();
+
+        taskList.addTask(new Task(101, "Design Module", "Pending"));
+        taskList.addTask(new Task(102, "Develop Feature", "In Progress"));
+        taskList.addTask(new Task(103, "Testing", "Completed"));
+
+        System.out.println("Task List:");
+        taskList.traverseTasks();
+
+        System.out.println("\nSearch Result:");
+        System.out.println(taskList.searchTask(102));
+
+        taskList.deleteTask(102);
+
+        System.out.println("\nAfter Deletion:");
+        taskList.traverseTasks();
+    }
+}
+```
+
+## 4. Analysis
+
+### Time Complexity of Operations
+
+| Operation      | Time Complexity |
+| -------------- | --------------- |
+| Add Task       | O(n)            |
+| Search Task    | O(n)            |
+| Traverse Tasks | O(n)            |
+| Delete Task    | O(n)            |
+
+### Explanation
+
+* **Add Task:** Traverses to the end of the list before inserting a new node.
+* **Search Task:** May need to examine every node.
+* **Traverse Tasks:** Visits each node once.
+* **Delete Task:** Requires locating the node before removing it.
+
+### Advantages of Linked Lists Over Arrays
+
+1. Dynamic size; no need to define capacity in advance.
+2. Efficient insertion and deletion without shifting elements.
+3. Better memory utilization for dynamic data.
+4. Easy implementation of stacks, queues, and other dynamic structures.
+5. Can grow and shrink during runtime.
+
+## Conclusion
+
+A Singly Linked List is an effective data structure for managing tasks in a task management system. It supports dynamic memory allocation and efficient insertion and deletion operations. Although searching and traversal require linear time, linked lists are more flexible than arrays when dealing with frequently changing data.
