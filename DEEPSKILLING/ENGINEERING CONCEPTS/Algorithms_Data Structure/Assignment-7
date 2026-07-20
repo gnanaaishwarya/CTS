@@ -1,0 +1,115 @@
+Exercise 7: Financial Forecasting
+
+## 1. Understanding Recursive Algorithms
+
+Recursion is a programming technique in which a method calls itself to solve a problem. A recursive solution breaks a large problem into smaller subproblems until it reaches a base case.
+
+### Advantages of Recursion
+
+1. Simplifies complex problems by dividing them into smaller parts.
+2. Produces cleaner and more readable code.
+3. Useful for problems that have repetitive substructures.
+4. Commonly used in mathematical calculations, tree traversals, and divide-and-conquer algorithms.
+
+In financial forecasting, recursion can be used to calculate future values by repeatedly applying a growth rate to the previous value.
+
+## 2. Setup
+
+Create a method that calculates the future value of an investment using a recursive approach.
+
+### Formula
+
+Future Value = Present Value × (1 + Growth Rate)^n
+
+Where:
+
+* Present Value = Initial amount
+* Growth Rate = Annual growth rate
+* n = Number of years
+
+## 3. Implementation
+
+### Recursive Forecast Method
+
+```java
+public class FinancialForecast {
+
+    public static double calculateFutureValue(double presentValue, double growthRate, int years) {
+        if (years == 0) {
+            return presentValue;
+        }
+
+        return (1 + growthRate) * calculateFutureValue(presentValue, growthRate, years - 1);
+    }
+
+    public static void main(String[] args) {
+        double presentValue = 10000;
+        double growthRate = 0.10;
+        int years = 5;
+
+        double futureValue = calculateFutureValue(presentValue, growthRate, years);
+
+        System.out.println("Future Value: " + futureValue);
+    }
+}
+```
+
+### Sample Output
+
+```text
+Future Value: 16105.1
+```
+
+## 4. Analysis
+
+### Time Complexity
+
+For each recursive call, the value of years decreases by 1 until it reaches 0.
+
+Number of recursive calls = n
+
+Therefore:
+
+* Time Complexity: O(n)
+* Space Complexity: O(n)
+
+The space complexity is O(n) because each recursive call is stored in the call stack until the base case is reached.
+
+### Optimization Techniques
+
+#### 1. Memoization
+
+Store previously computed results and reuse them instead of recalculating them. This reduces redundant computations in more complex recursive problems.
+
+#### 2. Iterative Approach
+
+Replace recursion with a loop to eliminate call stack overhead.
+
+```java
+public static double calculateFutureValue(double presentValue, double growthRate, int years) {
+    double futureValue = presentValue;
+
+    for (int i = 0; i < years; i++) {
+        futureValue = futureValue * (1 + growthRate);
+    }
+
+    return futureValue;
+}
+```
+
+#### 3. Dynamic Programming
+
+For forecasting models involving multiple repeated calculations, dynamic programming can store intermediate results and improve efficiency.
+
+### Comparison
+
+| Approach  | Time Complexity | Space Complexity |
+| --------- | --------------- | ---------------- |
+| Recursive | O(n)            | O(n)             |
+| Iterative | O(n)            | O(1)             |
+
+The iterative solution is generally more efficient because it avoids recursive call stack usage.
+
+## Conclusion
+
+Recursion provides a simple and elegant way to implement financial forecasting by repeatedly applying growth rates to past values. The recursive algorithm has a time complexity of O(n) and a space complexity of O(n). For better performance and reduced memory usage, an iterative approach or dynamic programming techniques can be used in real-world financial forecasting applications.
