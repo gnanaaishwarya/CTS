@@ -1,0 +1,159 @@
+Exercise 9: Implementing the Command Pattern
+
+## Aim
+
+To implement the Command Design Pattern for a home automation system that can turn devices on and off using commands.
+
+## Project Name
+
+CommandPatternExample
+
+## Project Structure
+
+```text id="w8f2mk"
+CommandPatternExample
+│
+├── Command.java
+├── Light.java
+├── LightOnCommand.java
+├── LightOffCommand.java
+├── RemoteControl.java
+└── CommandTest.java
+```
+
+## 1. Define Command Interface
+
+### Command.java
+
+```java id="n3x7qb"
+public interface Command {
+    void execute();
+}
+```
+
+## 2. Implement Receiver Class
+
+### Light.java
+
+```java id="0w9vce"
+public class Light {
+
+    public void turnOn() {
+        System.out.println("Light is ON");
+    }
+
+    public void turnOff() {
+        System.out.println("Light is OFF");
+    }
+}
+```
+
+## 3. Implement Concrete Commands
+
+### LightOnCommand.java
+
+```java id="j6r2ha"
+public class LightOnCommand implements Command {
+
+    private Light light;
+
+    public LightOnCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOn();
+    }
+}
+```
+
+### LightOffCommand.java
+
+```java id="p5m8dk"
+public class LightOffCommand implements Command {
+
+    private Light light;
+
+    public LightOffCommand(Light light) {
+        this.light = light;
+    }
+
+    @Override
+    public void execute() {
+        light.turnOff();
+    }
+}
+```
+
+## 4. Implement Invoker Class
+
+### RemoteControl.java
+
+```java id="u1t9yl"
+public class RemoteControl {
+
+    private Command command;
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void pressButton() {
+        command.execute();
+    }
+}
+```
+
+## 5. Test the Command Pattern
+
+### CommandTest.java
+
+```java id="y7e4qb"
+public class CommandTest {
+
+    public static void main(String[] args) {
+
+        Light light = new Light();
+
+        Command lightOn = new LightOnCommand(light);
+        Command lightOff = new LightOffCommand(light);
+
+        RemoteControl remote = new RemoteControl();
+
+        remote.setCommand(lightOn);
+        remote.pressButton();
+
+        remote.setCommand(lightOff);
+        remote.pressButton();
+    }
+}
+```
+
+## Output
+
+```text id="0f4xgj"
+Light is ON
+Light is OFF
+```
+
+## Working
+
+1. The `Command` interface declares the `execute()` method.
+2. `Light` acts as the receiver and contains the actual business logic.
+3. `LightOnCommand` and `LightOffCommand` are concrete command classes that invoke operations on the receiver.
+4. `RemoteControl` acts as the invoker and triggers command execution.
+5. The client creates command objects and assigns them to the remote control.
+6. The remote control executes the assigned command without knowing the implementation details.
+
+## Advantages of Command Pattern
+
+1. Decouples the sender from the receiver.
+2. Supports flexible command execution.
+3. Makes it easy to add new commands.
+4. Promotes code reusability and maintainability.
+5. Supports features such as command queues, logging, and undo operations.
+
+## Conclusion
+
+The Command Pattern was successfully implemented using command objects to encapsulate requests for turning a light on and off. The RemoteControl invoker executes commands without directly interacting with the receiver. This design improves flexibility, scalability, and maintainability in home automation systems.
