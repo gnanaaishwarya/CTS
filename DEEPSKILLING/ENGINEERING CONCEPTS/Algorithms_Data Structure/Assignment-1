@@ -1,0 +1,191 @@
+Exercise 1: Inventory Management System
+Scenario: 
+You are developing an inventory management system for a warehouse. Efficient data storage and retrieval are crucial.
+
+Why Data Structures and Algorithms are Essential
+
+In an inventory management system, a warehouse may contain thousands or even millions of products. Efficient data structures and algorithms help in:
+
+-->Fast storage and retrieval of product information.
+-->Quick updates to inventory quantities and prices.
+-->Reduced memory usage.
+-->Improved system performance when handling large datasets.
+-->Faster search, insertion, and deletion operations.
+
+Without proper data structures and algorithms, inventory operations would become slow and inefficient as the number of products increases.
+
+Suitable Data Structures
+
+Some suitable data structures for inventory management are:
+
+Data Structure	Usage
+-->ArrayList	Stores products sequentially and allows easy iteration.
+-->HashMap	Stores products using productId as the key for fast access.
+-->LinkedList	Useful when frequent insertions and deletions are required.
+-->TreeMap	Maintains products in sorted order.
+
+For this system, HashMap is the best choice because it provides fast access, insertion, update, and deletion using the productId.
+
+
+2. Setup
+Create a new Java project named:
+
+InventoryManagementSystem
+
+Project Structure:
+
+Inventory Management System
+│
+├── Product.java
+├── InventoryManager.java
+└── Main.java
+
+Product.java
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create an inventory list to hold products
+        List<Product> inventory = new ArrayList<>();
+
+        // Initialize and add product instances
+        Product prod1 = new Product(101, "Wireless Mouse", 50, 24.99);
+        Product prod2 = new Product(102, "Mechanical Keyboard", 30, 79.99);
+        Product prod3 = new Product(103, "Gaming Monitor", 15, 299.50);
+
+        inventory.add(prod1);
+        inventory.add(prod2);
+        inventory.add(prod3);
+
+        // Print initial inventory using the toString() method
+        System.out.println("--- Current Inventory ---");
+        for (Product p : inventory) {
+            System.out.println(p);
+        }
+
+        // Update product stock and price using setter methods
+        System.out.println("\n--- Updating Inventory ---");
+        prod1.setQuantity(45); // 5 mice sold
+        prod2.setPrice(69.99); // Keyboard put on sale
+
+        // Access specific details using getter methods
+        System.out.println("Updated " + prod1.getProductName() + " stock: " + prod1.getQuantity());
+        System.out.println("Updated " + prod2.getProductName() + " price: $" + prod2.getPrice());
+    }
+}
+
+
+InventoryManager Class
+import java.util.HashMap;
+
+public class InventoryManager {
+
+    private HashMap<Integer, Product> inventory =
+            new HashMap<>();
+
+    // Add Product
+    public void addProduct(Product product) {
+        inventory.put(product.getProductId(), product);
+        System.out.println("Product Added Successfully");
+    }
+
+    // Update Product
+    public void updateProduct(int productId,
+                              int quantity,
+                              double price) {
+
+        Product product = inventory.get(productId);
+
+        if (product != null) {
+            product.setQuantity(quantity);
+            product.setPrice(price);
+            System.out.println("Product Updated Successfully");
+        } else {
+            System.out.println("Product Not Found");
+        }
+    }
+
+    // Delete Product
+    public void deleteProduct(int productId) {
+
+        if (inventory.remove(productId) != null) {
+            System.out.println("Product Deleted Successfully");
+        } else {
+            System.out.println("Product Not Found");
+        }
+    }
+
+    // Display Inventory
+    public void displayInventory() {
+        for (Product product : inventory.values()) {
+            System.out.println(product);
+        }
+    }
+}
+
+
+Main Class
+public class Main {
+
+    public static void main(String[] args) {
+
+        InventoryManager manager =
+                new InventoryManager();
+
+        manager.addProduct(
+                new Product(101,
+                            "Laptop",
+                            50,
+                            55000));
+
+        manager.addProduct(
+                new Product(102,
+                            "Mouse",
+                            100,
+                            500));
+
+        manager.displayInventory();
+
+        manager.updateProduct(101, 60, 53000);
+
+        manager.deleteProduct(102);
+
+        manager.displayInventory();
+    }
+}
+
+
+Analysis
+Time Complexity
+
+Using HashMap:
+
+Operation	Time Complexity
+Add Product	O(1)
+Update Product	O(1)
+Delete Product	O(1)
+Search Product	O(1)
+
+Explanation:
+
+HashMap stores data using key-value pairs.
+The productId acts as the key.
+Hashing allows direct access to product records without searching through all products.
+
+
+Optimization Techniques
+Use HashMap
+Provides constant-time operations for add, update, delete, and search.
+Use Unique Product IDs
+Prevents duplicate entries and improves retrieval efficiency.
+Efficient Hash Functions
+Reduces collisions and maintains O(1) performance.
+Database Indexing
+If inventory data is stored in a database, indexing productId improves search speed.
+Caching Frequently Accessed Products
+Reduces repeated database access and improves performance.
+Conclusion
+
+An Inventory Management System can be efficiently implemented using a HashMap because it provides O(1) average time complexity for insertion, update, deletion, and search operations. Proper selection of data structures and algorithms ensures better performance, scalability, and efficient management of large inventories.
