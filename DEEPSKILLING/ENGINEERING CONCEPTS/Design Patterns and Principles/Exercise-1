@@ -1,0 +1,88 @@
+Exercise 1: Implementing the Singleton Pattern
+
+## 1. Create a New Java Project
+
+Create a new Java project named:
+
+**SingletonPatternExample**
+
+Project Structure:
+
+```text
+SingletonPatternExample
+│
+├── Logger.java
+└── TestLogger.java
+```
+
+## 2. Define a Singleton Class
+
+### Logger Class
+
+```java
+public class Logger {
+
+    private static Logger instance;
+
+    private Logger() {
+    }
+
+    public static Logger getInstance() {
+        if (instance == null) {
+            instance = new Logger();
+        }
+        return instance;
+    }
+
+    public void log(String message) {
+        System.out.println("Log: " + message);
+    }
+}
+```
+
+## 3. Implement the Singleton Pattern
+
+The Singleton Pattern is implemented using the following features:
+
+1. The constructor is declared as private to prevent object creation from outside the class.
+2. A private static instance variable stores the single object of the class.
+3. A public static method `getInstance()` provides global access to the single instance.
+4. The instance is created only when it is requested for the first time.
+
+## 4. Test the Singleton Implementation
+
+### TestLogger Class
+
+```java
+public class TestLogger {
+
+    public static void main(String[] args) {
+
+        Logger logger1 = Logger.getInstance();
+        Logger logger2 = Logger.getInstance();
+
+        logger1.log("First log message");
+        logger2.log("Second log message");
+
+        System.out.println(logger1 == logger2);
+    }
+}
+```
+
+### Output
+
+```text
+Log: First log message
+Log: Second log message
+true
+```
+
+## Explanation
+
+* `logger1` and `logger2` are obtained using the `getInstance()` method.
+* Both references point to the same Logger object.
+* The expression `logger1 == logger2` returns `true`, proving that only one instance of Logger exists throughout the application.
+
+## Conclusion
+
+The Logger class successfully implements the Singleton Design Pattern by restricting object creation and providing a single global instance. This ensures consistent logging and efficient resource utilization across the application.
