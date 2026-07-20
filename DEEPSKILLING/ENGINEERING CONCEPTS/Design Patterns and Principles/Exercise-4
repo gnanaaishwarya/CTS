@@ -1,0 +1,142 @@
+Exercise 4: Implementing the Adapter Pattern
+
+## Aim
+
+To implement the Adapter Design Pattern for integrating multiple third-party payment gateways with different interfaces into a unified payment processing system.
+
+## Project Name
+
+AdapterPatternExample
+
+## Project Structure
+
+```text
+AdapterPatternExample
+│
+├── PaymentProcessor.java
+├── PayPalGateway.java
+├── StripeGateway.java
+├── PayPalAdapter.java
+├── StripeAdapter.java
+└── AdapterTest.java
+```
+
+## 1. Define Target Interface
+
+### PaymentProcessor.java
+
+```java
+public interface PaymentProcessor {
+    void processPayment(double amount);
+}
+```
+
+## 2. Implement Adaptee Classes
+
+### PayPalGateway.java
+
+```java
+public class PayPalGateway {
+
+    public void makePayment(double amount) {
+        System.out.println("Payment of Rs." + amount + " processed through PayPal.");
+    }
+}
+```
+
+### StripeGateway.java
+
+```java
+public class StripeGateway {
+
+    public void pay(double amount) {
+        System.out.println("Payment of Rs." + amount + " processed through Stripe.");
+    }
+}
+```
+
+## 3. Implement Adapter Classes
+
+### PayPalAdapter.java
+
+```java
+public class PayPalAdapter implements PaymentProcessor {
+
+    private PayPalGateway payPalGateway;
+
+    public PayPalAdapter(PayPalGateway payPalGateway) {
+        this.payPalGateway = payPalGateway;
+    }
+
+    @Override
+    public void processPayment(double amount) {
+        payPalGateway.makePayment(amount);
+    }
+}
+```
+
+### StripeAdapter.java
+
+```java
+public class StripeAdapter implements PaymentProcessor {
+
+    private StripeGateway stripeGateway;
+
+    public StripeAdapter(StripeGateway stripeGateway) {
+        this.stripeGateway = stripeGateway;
+    }
+
+    @Override
+    public void processPayment(double amount) {
+        stripeGateway.pay(amount);
+    }
+}
+```
+
+## 4. Test the Adapter Pattern
+
+### AdapterTest.java
+
+```java
+public class AdapterTest {
+
+    public static void main(String[] args) {
+
+        PaymentProcessor paypalProcessor =
+                new PayPalAdapter(new PayPalGateway());
+
+        PaymentProcessor stripeProcessor =
+                new StripeAdapter(new StripeGateway());
+
+        paypalProcessor.processPayment(5000);
+        stripeProcessor.processPayment(7500);
+    }
+}
+```
+
+## Output
+
+```text
+Payment of Rs.5000.0 processed through PayPal.
+Payment of Rs.7500.0 processed through Stripe.
+```
+
+## Working
+
+1. The `PaymentProcessor` interface acts as the target interface expected by the client.
+2. `PayPalGateway` and `StripeGateway` are third-party payment gateways with different method names.
+3. `PayPalAdapter` and `StripeAdapter` implement the `PaymentProcessor` interface.
+4. The adapters translate the `processPayment()` call into gateway-specific method calls.
+5. The client interacts only with the `PaymentProcessor` interface without knowing the implementation details of each payment gateway.
+
+## Advantages of Adapter Pattern
+
+1. Allows incompatible interfaces to work together.
+2. Promotes code reusability.
+3. Improves flexibility when integrating third-party services.
+4. Reduces changes required in client code.
+5. Makes the system easier to maintain and extend.
+
+## Conclusion
+
+The Adapter Pattern was successfully implemented to integrate multiple payment gateways through a common interface. The adapters convert gateway-specific method calls into a standard format, enabling seamless integration while maintaining flexibility, scalability, and loose coupling within the payment processing system.
