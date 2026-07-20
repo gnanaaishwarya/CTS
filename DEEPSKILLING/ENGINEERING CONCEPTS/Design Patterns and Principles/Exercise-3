@@ -1,0 +1,148 @@
+Exercise 3: Implementing the Builder Pattern
+
+## Aim
+
+To implement the Builder Design Pattern for creating complex Computer objects with multiple optional attributes.
+
+## Project Name
+
+BuilderPatternExample
+
+## Project Structure
+
+```text
+BuilderPatternExample
+│
+├── Computer.java
+└── BuilderTest.java
+```
+
+## 1. Define the Product Class
+
+### Computer.java
+
+```java
+public class Computer {
+
+    private String CPU;
+    private int RAM;
+    private int Storage;
+    private String GraphicsCard;
+
+    private Computer(Builder builder) {
+        this.CPU = builder.CPU;
+        this.RAM = builder.RAM;
+        this.Storage = builder.Storage;
+        this.GraphicsCard = builder.GraphicsCard;
+    }
+
+    public void display() {
+        System.out.println("CPU: " + CPU);
+        System.out.println("RAM: " + RAM + " GB");
+        System.out.println("Storage: " + Storage + " GB");
+        System.out.println("Graphics Card: " + GraphicsCard);
+        System.out.println();
+    }
+
+    public static class Builder {
+
+        private String CPU;
+        private int RAM;
+        private int Storage;
+        private String GraphicsCard;
+
+        public Builder setCPU(String CPU) {
+            this.CPU = CPU;
+            return this;
+        }
+
+        public Builder setRAM(int RAM) {
+            this.RAM = RAM;
+            return this;
+        }
+
+        public Builder setStorage(int Storage) {
+            this.Storage = Storage;
+            return this;
+        }
+
+        public Builder setGraphicsCard(String GraphicsCard) {
+            this.GraphicsCard = GraphicsCard;
+            return this;
+        }
+
+        public Computer build() {
+            return new Computer(this);
+        }
+    }
+}
+```
+
+## 2. Test the Builder Pattern
+
+### BuilderTest.java
+
+```java
+public class BuilderTest {
+
+    public static void main(String[] args) {
+
+        Computer gamingPC = new Computer.Builder()
+                .setCPU("Intel Core i9")
+                .setRAM(32)
+                .setStorage(1000)
+                .setGraphicsCard("NVIDIA RTX 4080")
+                .build();
+
+        Computer officePC = new Computer.Builder()
+                .setCPU("Intel Core i5")
+                .setRAM(16)
+                .setStorage(512)
+                .setGraphicsCard("Integrated Graphics")
+                .build();
+
+        System.out.println("Gaming PC Configuration");
+        gamingPC.display();
+
+        System.out.println("Office PC Configuration");
+        officePC.display();
+    }
+}
+```
+
+## Output
+
+```text
+Gaming PC Configuration
+CPU: Intel Core i9
+RAM: 32 GB
+Storage: 1000 GB
+Graphics Card: NVIDIA RTX 4080
+
+Office PC Configuration
+CPU: Intel Core i5
+RAM: 16 GB
+Storage: 512 GB
+Graphics Card: Integrated Graphics
+```
+
+## Working
+
+1. The `Computer` class represents the complex object to be created.
+2. The constructor of `Computer` is private and accepts a `Builder` object.
+3. The static nested `Builder` class contains methods to set different attributes.
+4. Each setter method returns the Builder object, enabling method chaining.
+5. The `build()` method creates and returns a fully configured `Computer` object.
+6. Different computer configurations can be created easily without multiple constructors.
+
+## Advantages of Builder Pattern
+
+1. Simplifies the creation of complex objects.
+2. Improves code readability through method chaining.
+3. Avoids large constructors with many parameters.
+4. Allows optional attributes to be configured easily.
+5. Promotes immutability and maintainability.
+
+## Conclusion
+
+The Builder Pattern successfully separates the construction of a complex object from its representation. It provides a flexible and readable way to create different configurations of a Computer object while improving code maintainability and scalability.
