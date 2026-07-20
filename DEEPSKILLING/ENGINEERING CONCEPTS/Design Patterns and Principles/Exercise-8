@@ -1,0 +1,124 @@
+Exercise 8: Implementing the Strategy Pattern
+
+## Aim
+
+To implement the Strategy Design Pattern for a payment system that allows different payment methods to be selected and used at runtime.
+
+## Project Name
+
+StrategyPatternExample
+
+## Project Structure
+
+```text
+StrategyPatternExample
+│
+├── PaymentStrategy.java
+├── CreditCardPayment.java
+├── PayPalPayment.java
+├── PaymentContext.java
+└── StrategyTest.java
+```
+
+## 1. Define Strategy Interface
+
+### PaymentStrategy.java
+
+```java
+public interface PaymentStrategy {
+    void pay(double amount);
+}
+```
+
+## 2. Implement Concrete Strategies
+
+### CreditCardPayment.java
+
+```java
+public class CreditCardPayment implements PaymentStrategy {
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid Rs." + amount + " using Credit Card");
+    }
+}
+```
+
+### PayPalPayment.java
+
+```java
+public class PayPalPayment implements PaymentStrategy {
+
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid Rs." + amount + " using PayPal");
+    }
+}
+```
+
+## 3. Implement Context Class
+
+### PaymentContext.java
+
+```java
+public class PaymentContext {
+
+    private PaymentStrategy paymentStrategy;
+
+    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+        this.paymentStrategy = paymentStrategy;
+    }
+
+    public void executePayment(double amount) {
+        paymentStrategy.pay(amount);
+    }
+}
+```
+
+## 4. Test the Strategy Pattern
+
+### StrategyTest.java
+
+```java
+public class StrategyTest {
+
+    public static void main(String[] args) {
+
+        PaymentContext context = new PaymentContext();
+
+        context.setPaymentStrategy(new CreditCardPayment());
+        context.executePayment(5000);
+
+        context.setPaymentStrategy(new PayPalPayment());
+        context.executePayment(2500);
+    }
+}
+```
+
+## Output
+
+```text
+Paid Rs.5000.0 using Credit Card
+Paid Rs.2500.0 using PayPal
+```
+
+## Working
+
+1. The `PaymentStrategy` interface defines the common `pay()` method.
+2. `CreditCardPayment` and `PayPalPayment` are concrete strategy classes implementing different payment methods.
+3. `PaymentContext` maintains a reference to a `PaymentStrategy`.
+4. The strategy can be changed at runtime using the `setPaymentStrategy()` method.
+5. The `executePayment()` method delegates the payment operation to the selected strategy.
+6. The client can switch between payment methods without modifying the context class.
+
+## Advantages of Strategy Pattern
+
+1. Encapsulates different algorithms in separate classes.
+2. Allows runtime selection of algorithms.
+3. Promotes the Open-Closed Principle.
+4. Eliminates complex conditional statements.
+5. Improves flexibility and maintainability.
+
+## Conclusion
+
+The Strategy Pattern was successfully implemented using a common PaymentStrategy interface and multiple payment method implementations. The PaymentContext class dynamically selects and executes the desired payment strategy at runtime. This approach provides flexibility, scalability, and maintainability while allowing easy addition of new payment methods in the future.
