@@ -1,0 +1,135 @@
+Exercise 6: Implementing the Proxy Pattern
+
+## Aim
+
+To implement the Proxy Design Pattern for an image viewer application that supports lazy initialization and caching of images loaded from a remote server.
+
+## Project Name
+
+ProxyPatternExample
+
+## Project Structure
+
+```text
+ProxyPatternExample
+│
+├── Image.java
+├── RealImage.java
+├── ProxyImage.java
+└── ProxyTest.java
+```
+
+## 1. Define Subject Interface
+
+### Image.java
+
+```java
+public interface Image {
+    void display();
+}
+```
+
+## 2. Implement Real Subject Class
+
+### RealImage.java
+
+```java
+public class RealImage implements Image {
+
+    private String fileName;
+
+    public RealImage(String fileName) {
+        this.fileName = fileName;
+        loadFromServer();
+    }
+
+    private void loadFromServer() {
+        System.out.println("Loading " + fileName + " from remote server...");
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Displaying " + fileName);
+    }
+}
+```
+
+## 3. Implement Proxy Class
+
+### ProxyImage.java
+
+```java
+public class ProxyImage implements Image {
+
+    private RealImage realImage;
+    private String fileName;
+
+    public ProxyImage(String fileName) {
+        this.fileName = fileName;
+    }
+
+    @Override
+    public void display() {
+
+        if (realImage == null) {
+            realImage = new RealImage(fileName);
+        }
+
+        realImage.display();
+    }
+}
+```
+
+## 4. Test the Proxy Pattern
+
+### ProxyTest.java
+
+```java
+public class ProxyTest {
+
+    public static void main(String[] args) {
+
+        Image image = new ProxyImage("sample.jpg");
+
+        System.out.println("First Display:");
+        image.display();
+
+        System.out.println();
+
+        System.out.println("Second Display:");
+        image.display();
+    }
+}
+```
+
+## Output
+
+```text
+First Display:
+Loading sample.jpg from remote server...
+Displaying sample.jpg
+
+Second Display:
+Displaying sample.jpg
+```
+
+## Working
+
+1. The `Image` interface acts as the subject interface.
+2. `RealImage` is the real object responsible for loading and displaying images.
+3. Loading an image from a remote server is considered an expensive operation.
+4. `ProxyImage` acts as a substitute for `RealImage`.
+5. The image is loaded only when the `display()` method is called for the first time (lazy initialization).
+6. Once loaded, the same `RealImage` object is reused, providing caching and avoiding repeated loading.
+
+## Advantages of Proxy Pattern
+
+1. Supports lazy initialization of resource-intensive objects.
+2. Improves application performance.
+3. Reduces unnecessary object creation.
+4. Provides caching and access control.
+5. Hides the complexity of object creation from the client.
+
+## Conclusion
+
+The Proxy Pattern was successfully implemented using the `ProxyImage` class to control access to `RealImage`. The proxy delays image loading until it is actually needed and reuses the loaded image for subsequent requests. This improves performance, reduces resource consumption, and provides an efficient way to manage remote image loading.
