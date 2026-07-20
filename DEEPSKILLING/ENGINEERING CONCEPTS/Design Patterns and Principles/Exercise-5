@@ -1,0 +1,169 @@
+Exercise 5: Implementing the Decorator Pattern
+
+## Aim
+
+To implement the Decorator Design Pattern for dynamically adding notification channels such as Email, SMS, and Slack to a notification system.
+
+## Project Name
+
+DecoratorPatternExample
+
+## Project Structure
+
+```text
+DecoratorPatternExample
+│
+├── Notifier.java
+├── EmailNotifier.java
+├── NotifierDecorator.java
+├── SMSNotifierDecorator.java
+├── SlackNotifierDecorator.java
+└── DecoratorTest.java
+```
+
+## 1. Define Component Interface
+
+### Notifier.java
+
+```java
+public interface Notifier {
+    void send();
+}
+```
+
+## 2. Implement Concrete Component
+
+### EmailNotifier.java
+
+```java
+public class EmailNotifier implements Notifier {
+
+    @Override
+    public void send() {
+        System.out.println("Sending notification via Email");
+    }
+}
+```
+
+## 3. Implement Decorator Classes
+
+### NotifierDecorator.java
+
+```java
+public abstract class NotifierDecorator implements Notifier {
+
+    protected Notifier notifier;
+
+    public NotifierDecorator(Notifier notifier) {
+        this.notifier = notifier;
+    }
+
+    @Override
+    public void send() {
+        notifier.send();
+    }
+}
+```
+
+### SMSNotifierDecorator.java
+
+```java
+public class SMSNotifierDecorator extends NotifierDecorator {
+
+    public SMSNotifierDecorator(Notifier notifier) {
+        super(notifier);
+    }
+
+    @Override
+    public void send() {
+        super.send();
+        System.out.println("Sending notification via SMS");
+    }
+}
+```
+
+### SlackNotifierDecorator.java
+
+```java
+public class SlackNotifierDecorator extends NotifierDecorator {
+
+    public SlackNotifierDecorator(Notifier notifier) {
+        super(notifier);
+    }
+
+    @Override
+    public void send() {
+        super.send();
+        System.out.println("Sending notification via Slack");
+    }
+}
+```
+
+## 4. Test the Decorator Pattern
+
+### DecoratorTest.java
+
+```java
+public class DecoratorTest {
+
+    public static void main(String[] args) {
+
+        Notifier emailNotifier = new EmailNotifier();
+        System.out.println("Email Notification:");
+        emailNotifier.send();
+
+        System.out.println();
+
+        Notifier emailAndSMS =
+                new SMSNotifierDecorator(new EmailNotifier());
+        System.out.println("Email + SMS Notification:");
+        emailAndSMS.send();
+
+        System.out.println();
+
+        Notifier emailSMSAndSlack =
+                new SlackNotifierDecorator(
+                        new SMSNotifierDecorator(
+                                new EmailNotifier()));
+
+        System.out.println("Email + SMS + Slack Notification:");
+        emailSMSAndSlack.send();
+    }
+}
+```
+
+## Output
+
+```text
+Email Notification:
+Sending notification via Email
+
+Email + SMS Notification:
+Sending notification via Email
+Sending notification via SMS
+
+Email + SMS + Slack Notification:
+Sending notification via Email
+Sending notification via SMS
+Sending notification via Slack
+```
+
+## Working
+
+1. The `Notifier` interface defines the common `send()` operation.
+2. `EmailNotifier` is the concrete component that provides the basic notification functionality.
+3. `NotifierDecorator` is an abstract decorator that holds a reference to a `Notifier` object.
+4. `SMSNotifierDecorator` and `SlackNotifierDecorator` add additional notification channels.
+5. Decorators can be combined dynamically to provide multiple notification methods without modifying existing classes.
+
+## Advantages of Decorator Pattern
+
+1. Adds functionality dynamically at runtime.
+2. Follows the Open-Closed Principle.
+3. Avoids creating many subclasses for feature combinations.
+4. Promotes flexible and reusable code.
+5. Simplifies maintenance and extension of the system.
+
+## Conclusion
+
+The Decorator Pattern was successfully implemented to extend notification functionality dynamically. By wrapping objects with decorators, multiple notification channels such as Email, SMS, and Slack can be added without altering existing code. This approach provides flexibility, scalability, and maintainability in the notification system.
