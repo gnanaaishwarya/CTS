@@ -1,0 +1,175 @@
+Exercise 4: Employee Management System
+
+## 1. Understanding Array Representation
+
+Arrays are linear data structures that store elements of the same type in contiguous memory locations. Each element is accessed using an index, starting from 0.
+
+### Advantages of Arrays
+
+1. Fast access to elements using indexes.
+2. Efficient memory usage due to contiguous storage.
+3. Simple to implement and use.
+4. Suitable for storing a fixed number of records.
+
+## 2. Setup
+
+### Employee Class
+
+```java
+public class Employee {
+    private int employeeId;
+    private String name;
+    private String position;
+    private double salary;
+
+    public Employee(int employeeId, String name, String position, double salary) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.position = position;
+        this.salary = salary;
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee ID: " + employeeId + ", Name: " + name + ", Position: " + position + ", Salary: " + salary;
+    }
+}
+```
+
+## 3. Implementation
+
+### Employee Management Class
+
+```java
+public class EmployeeManagement {
+    private Employee[] employees;
+    private int count;
+
+    public EmployeeManagement(int size) {
+        employees = new Employee[size];
+        count = 0;
+    }
+
+    public void addEmployee(Employee employee) {
+        if (count < employees.length) {
+            employees[count++] = employee;
+        } else {
+            System.out.println("Array is full");
+        }
+    }
+
+    public Employee searchEmployee(int employeeId) {
+        for (int i = 0; i < count; i++) {
+            if (employees[i].getEmployeeId() == employeeId) {
+                return employees[i];
+            }
+        }
+        return null;
+    }
+
+    public void traverseEmployees() {
+        for (int i = 0; i < count; i++) {
+            System.out.println(employees[i]);
+        }
+    }
+
+    public void deleteEmployee(int employeeId) {
+        int index = -1;
+
+        for (int i = 0; i < count; i++) {
+            if (employees[i].getEmployeeId() == employeeId) {
+                index = i;
+                break;
+            }
+        }
+
+        if (index != -1) {
+            for (int i = index; i < count - 1; i++) {
+                employees[i] = employees[i + 1];
+            }
+            employees[count - 1] = null;
+            count--;
+            System.out.println("Employee deleted successfully");
+        } else {
+            System.out.println("Employee not found");
+        }
+    }
+}
+```
+
+### Main Class
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        EmployeeManagement management = new EmployeeManagement(5);
+
+        management.addEmployee(new Employee(101, "Rahul", "Manager", 60000));
+        management.addEmployee(new Employee(102, "Priya", "Developer", 50000));
+        management.addEmployee(new Employee(103, "Amit", "Tester", 45000));
+
+        System.out.println("Employee Records:");
+        management.traverseEmployees();
+
+        System.out.println("\nSearch Result:");
+        System.out.println(management.searchEmployee(102));
+
+        management.deleteEmployee(102);
+
+        System.out.println("\nAfter Deletion:");
+        management.traverseEmployees();
+    }
+}
+```
+
+## 4. Analysis
+
+### Time Complexity of Operations
+
+| Operation          | Time Complexity |
+| ------------------ | --------------- |
+| Add Employee       | O(1)            |
+| Search Employee    | O(n)            |
+| Traverse Employees | O(n)            |
+| Delete Employee    | O(n)            |
+
+### Explanation
+
+* **Add Employee:** Inserts the employee at the next available position, requiring constant time.
+* **Search Employee:** May need to check every employee record in the worst case.
+* **Traverse Employees:** Visits each employee exactly once.
+* **Delete Employee:** Requires searching for the employee and shifting remaining elements.
+
+### Limitations of Arrays
+
+1. Fixed size once created.
+2. Insertion and deletion operations are costly because elements must be shifted.
+3. Memory may be wasted if the array size is larger than required.
+4. Cannot grow dynamically during runtime.
+
+### When to Use Arrays
+
+1. When the number of records is known in advance.
+2. When fast index-based access is required.
+3. When memory efficiency is important.
+4. When insertions and deletions are infrequent.
+
+## Conclusion
+
+Arrays provide efficient storage and direct access to employee records. Operations such as searching, traversing, and deleting require linear time, while insertion takes constant time. Arrays are suitable for fixed-size datasets but become less efficient when frequent insertions and deletions are required.
